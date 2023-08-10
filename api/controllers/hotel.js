@@ -119,11 +119,27 @@ export const getHotelRooms = async (req, res, next) => {
 };
 
 
+// export const searchHotelsByCity = async (req, res, next) => {
+//   const { cityName } = req.query;
+
+//   try {
+//     const hotels = await Hotel.find({ city: cityName });
+
+//     if (hotels.length === 0) {
+//       return res.status(404).json({ message: 'No hotels found in the specified city.' });
+//     }
+
+//     return res.status(200).json(hotels);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 export const searchHotelsByCity = async (req, res, next) => {
   const { cityName } = req.query;
 
   try {
-    const hotels = await Hotel.find({ city: cityName });
+    const hotels = await Hotel.find({ city: { $regex: new RegExp(cityName, 'i') } });
 
     if (hotels.length === 0) {
       return res.status(404).json({ message: 'No hotels found in the specified city.' });
